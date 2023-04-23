@@ -1,5 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Post } from "../posts/post.entity";
+import { Post } from "@/posts/post.entity";
+import { User } from "@/api/user/user.entity";
+
 
 @Entity()
 export class Comment {
@@ -13,4 +15,9 @@ export class Comment {
     onDelete: "CASCADE",
   })
   post: Post;
+
+  @ManyToOne(() => User, user => user.comments, {
+    onDelete: "CASCADE",
+  })
+  author: User;
 }

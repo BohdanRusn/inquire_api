@@ -1,20 +1,35 @@
-import { Body, Controller, Delete, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Param,
+  Post, Req,
+  UseGuards,
+  UseInterceptors,
+} from "@nestjs/common";
 import { CommentsService } from "./comments.service";
 import { Comment } from "./comment.entity";
+import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
 
 @Controller("comments")
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
   @Post(":id")
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   async addComment(
+    @Req() req,
     @Param("id") id: number,
     @Body() commentData: Comment,
   ): Promise<Comment> {
-    return await this.commentService.create(id, commentData);
+    return await this.commentService.create(id, req.user.id, commentData);
   }
 
   @Delete(":id")
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   async deleteComment(@Param("id") id: number): Promise<void> {
     const comment = await this.commentService.findOne(id);
     if (!comment) {

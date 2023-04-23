@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { PostsModule } from "./posts/posts.module";
 import { CommentsModule } from "./comments/comments.module";
+import { ApiModule } from './api/api.module';
 import * as process from "process";
 
 @Module({
@@ -12,6 +13,7 @@ import * as process from "process";
     ConfigModule.forRoot({ isGlobal: true }),
     PostsModule,
     CommentsModule,
+    ApiModule,
     TypeOrmModule.forRoot({
       type: "postgres",
       host: process.env.PG_HOST,
