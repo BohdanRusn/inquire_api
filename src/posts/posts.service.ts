@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Post } from "./post.entity";
+import { CreatePostInput, Post } from "./post.entity";
 import { User } from "@/api/user/user.entity";
 
 @Injectable()
@@ -26,7 +26,7 @@ export class PostsService {
     });
   }
 
-  async create(userId: number, postData: Post): Promise<Post> {
+  async create(userId: number, postData: CreatePostInput): Promise<Post> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const newPost = new Post();
     newPost.content = postData.content;

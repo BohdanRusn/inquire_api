@@ -40,3 +40,12 @@ export class FindPostInput {
   @Field(() => Int)
   id: number;
 }
+
+@InputType()
+export class CreatePostInput {
+  @Field()
+  title: string;
+
+  @Field()
+  content: string;
+}

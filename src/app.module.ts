@@ -4,18 +4,14 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostsModule } from "./posts/posts.module";
-import { CommentsModule } from "./comments/comments.module";
 import { ApiModule } from "./api/api.module";
 import * as process from "process";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { decode } from "@/utils/jwt.utils";
-import dotenv from "dotenv";
-import { ConfigModule } from "@nestjs/config";
-import { PostsService } from "@/posts/posts.service";
+import * as dotenv from "dotenv";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config();
+dotenv.config();
 @Module({
   imports: [
     // ConfigModule.forRoot(),
@@ -39,12 +35,13 @@ require("dotenv").config();
       driver: ApolloDriver,
       context: ({ req, res }) => {
         // Get the cookie from request
-        const token = get(req, "cookies.token");
+        console.log(req.headers.authorization);
+        const token = req.headers.authorization;
 
         console.log({ token });
         // Verify the cookie
 
-        const user = token ? decode(get(req, "cookies.token")) : null;
+        const user = token ? decode(token) : null;
 
         // Attach the user object to the request object
         if (user) {

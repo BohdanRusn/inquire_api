@@ -41,3 +41,12 @@ type Query {
 input FindPostInput {
   id: Int!
 }
+
+type Mutation {
+  addPost(input: CreatePostInput!): Post!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+}

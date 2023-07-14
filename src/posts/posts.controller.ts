@@ -3,28 +3,27 @@ import {
   ClassSerializerInterceptor,
   Delete,
   Param,
-  Post,
   Put,
   Req,
   UseInterceptors,
 } from "@nestjs/common";
-import { FindPostInput, Post as P } from "./post.entity";
+import { CreatePostInput, FindPostInput, Post } from "./post.entity";
 import { PostsService } from "./posts.service";
-import { Args, Query, Resolver } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 
 // import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
 
-@Resolver(() => P)
+@Resolver(() => Post)
 export class PostsController {
   constructor(private readonly postService: PostsService) {}
 
-  @Query(() => [P])
-  async posts(): Promise<P[]> {
+  @Query(() => [Post])
+  async posts(): Promise<Post[]> {
     return await this.postService.findAllPosts();
   }
 
-  @Query(() => P)
-  async post(@Args("input") { id }: FindPostInput): Promise<P> {
+  @Query(() => Post)
+  async post(@Args("input") { id }: FindPostInput): Promise<Post> {
     const post = await this.postService.findOnePost(id);
     if (!post) {
       throw new Error("Post not found");
@@ -33,18 +32,21 @@ export class PostsController {
     }
   }
 
-  @Post()
   // @UseGuards(JwtAuthGuard)
+  @Mutation(() => Post)
   @UseInterceptors(ClassSerializerInterceptor)
-  async addPost(@Req() req, @Body() post: P): Promise<P> {
-    console.log(req.user);
-    return await this.postService.create(req.user.id, post);
+  async addPost(
+    @Req() req,
+    @Args("input") post: CreatePostInput,
+  ): Promise<Post> {
+    console.log(req);
+    return await this.postService.create(1, post);
   }
 
   @Put(":id")
   // @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  async updatePost(@Param("id") id: number, @Body() post: P): Promise<P> {
+  async updatePost(@Param("id") id: number, @Body() post: Post): Promise<Post> {
     return this.postService.update(id, post);
   }
 
@@ -53,7 +55,7 @@ export class PostsController {
   // @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async deletePost(@Param("id") id: number): Promise<void> {
-    const post = await this.postService.findOnePost(id as any);
+    const post = await this.postService.findOnePost(id);
     if (!post) {
       throw new Error("Post not found");
     }

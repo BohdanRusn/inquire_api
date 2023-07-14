@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQCGhLlpouwodWJ7O+ErKGXSGw18oKN7OKgaxxa878PWRAdKGxDC
