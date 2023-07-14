@@ -50,7 +50,7 @@ require("dotenv").config();
         if (user) {
           set(req, "user", user);
         }
-        console.log(req, res);
+
         return { res };
       },
     }),

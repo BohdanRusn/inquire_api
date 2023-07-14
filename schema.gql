@@ -34,8 +34,8 @@ type Post {
 
 type Query {
   getHello: String!
-  findAllPosts: [Post!]!
-  findOnePost(input: FindPostInput!): Post!
+  posts: [Post!]!
+  post(input: FindPostInput!): Post!
 }
 
 input FindPostInput {

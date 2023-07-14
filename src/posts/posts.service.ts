@@ -1,9 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { FindPostInput, Post } from "./post.entity";
+import { Post } from "./post.entity";
 import { User } from "@/api/user/user.entity";
-import { Args, Query } from "@nestjs/graphql";
 
 @Injectable()
 export class PostsService {
@@ -14,15 +13,13 @@ export class PostsService {
     private userRepository: Repository<User>,
   ) {}
 
-  @Query(() => [Post])
   async findAllPosts(): Promise<Post[]> {
     return await this.postRepository.find({
       relations: ["comments", "author"],
     });
   }
 
-  @Query(() => Post)
-  async findOnePost(@Args("input") { id }: FindPostInput): Promise<Post> {
+  async findOnePost(id: number): Promise<Post> {
     return await this.postRepository.findOne({
       where: { id },
       relations: ["comments.author", "author"],
