@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -6,7 +6,6 @@ import { User } from "@/api/user/user.entity";
 import { AuthController } from "./auth.controller";
 import { AuthHelper } from "./auth.helper";
 import { AuthService } from "./auth.service";
-import { JwtStrategy } from "./auth.strategy";
 
 @Module({
   imports: [
@@ -17,10 +16,10 @@ import { JwtStrategy } from "./auth.strategy";
         signOptions: { expiresIn: "10d" },
       }),
     }),
-    TypeOrmModule.forFeature([ User ]),
+    // forwardRef(() => ConfigService),
+    TypeOrmModule.forFeature([User]),
   ],
-  controllers: [ AuthController ],
-  providers: [ AuthService, AuthHelper, JwtStrategy ],
+  controllers: [AuthController],
+  providers: [AuthService, AuthHelper, AuthController],
 })
-export class AuthModule {
-}
+export class AuthModule {}

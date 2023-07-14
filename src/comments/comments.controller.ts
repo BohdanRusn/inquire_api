@@ -4,20 +4,23 @@ import {
   Controller,
   Delete,
   Param,
-  Post, Req,
-  UseGuards,
+  Post,
+  Req,
   UseInterceptors,
 } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
 import { Comment } from "./comment.entity";
-import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
+import { Resolver } from "@nestjs/graphql";
 
-@Controller("comments")
+// import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
+
+// @Controller("comments")
+@Resolver(of => Comment)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
   @Post(":id")
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async addComment(
     @Req() req,
@@ -28,7 +31,7 @@ export class CommentsController {
   }
 
   @Delete(":id")
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async deleteComment(@Param("id") id: number): Promise<void> {
     const comment = await this.commentService.findOne(id);

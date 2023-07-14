@@ -1,5 +1,5 @@
 import { Trim } from "class-sanitizer";
-import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
+import { IsEmail, IsString, MinLength } from "class-validator";
 
 export class RegisterDto {
   @Trim()

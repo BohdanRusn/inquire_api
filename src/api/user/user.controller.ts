@@ -1,7 +1,8 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller, Get,
+  Controller,
+  Get,
   Inject,
   Post,
   Put,
@@ -10,7 +11,7 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { Request } from "express";
-import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
+// import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
 import { UpdateNameDto } from "./user.dto";
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
@@ -20,9 +21,8 @@ export class UserController {
   @Inject(UserService)
   private readonly service: UserService;
 
-
   @Put("name")
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   private updateName(
     @Body() body: UpdateNameDto,

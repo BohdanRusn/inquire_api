@@ -7,7 +7,6 @@ import { User } from "@/api/user/user.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Post, User])],
-  controllers: [PostsController],
-  providers: [PostsService],
+  providers: [PostsService, PostsController],
 })
 export class PostsModule {}

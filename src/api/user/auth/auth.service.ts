@@ -17,24 +17,23 @@ export class AuthService {
     const { name, email, password }: RegisterDto = body;
     let user: User = await this.repository.findOne({ where: { email } });
 
-    if ( user ) {
+    if (user) {
       throw new HttpException("Conflict", HttpStatus.CONFLICT);
     }
-
     user = new User();
-
     user.name = name;
     user.email = email;
     user.password = this.helper.encodePassword(password);
-
     return this.repository.save(user);
   }
 
-  public async login(body: LoginDto): Promise<{ user: Omit<User, "password">; token: string }> {
+  public async login(
+    body: LoginDto,
+  ): Promise<{ user: Omit<User, "password">; token: string }> {
     const { email, password }: LoginDto = body;
     const user: User = await this.repository.findOne({ where: { email } });
 
-    if ( !user ) {
+    if (!user) {
       throw new HttpException("No user found", HttpStatus.NOT_FOUND);
     }
 
@@ -43,7 +42,7 @@ export class AuthService {
       user.password,
     );
 
-    if ( !isPasswordValid ) {
+    if (!isPasswordValid) {
       throw new HttpException("No user found", HttpStatus.NOT_FOUND);
     }
 
@@ -51,11 +50,13 @@ export class AuthService {
     const { password: uPass, ...other } = user;
     return {
       user: other,
-      token: this.helper.generateToken(user)
+      token: this.helper.generateToken(user),
     };
   }
 
-  public async refresh(user: User): Promise<{ user: Omit<User, "password">; token: string }> {
+  public async refresh(
+    user: User,
+  ): Promise<{ user: Omit<User, "password">; token: string }> {
     await this.repository.update(user.id, { lastLoginAt: new Date() });
     const userT: User = await this.repository.findOne({
       where: { email: user.email },
@@ -64,7 +65,7 @@ export class AuthService {
 
     return {
       user: other,
-      token: this.helper.generateToken(user)
+      token: this.helper.generateToken(user),
     };
   }
 }

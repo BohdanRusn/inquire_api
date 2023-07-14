@@ -10,7 +10,6 @@ import {
 } from "@nestjs/common";
 import { User } from "@/api/user/user.entity";
 import { LoginDto, RegisterDto } from "./auth.dto";
-import { JwtAuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 import { Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
