@@ -14,8 +14,8 @@ type User {
   name: String!
   email: String!
   password: String!
-  posts: Post!
-  comments: Comment!
+  posts: Post
+  comments: Comment
   lastLoginAt: DateTime!
 }
 
@@ -28,25 +28,28 @@ type Post {
   id: Float!
   title: String!
   content: String!
-  comments: Comment!
+  comments: Comment
   author: User!
 }
 
 type Query {
   getHello: String!
-  posts: [Post!]!
-  post(input: FindPostInput!): Post!
-}
-
-input FindPostInput {
-  id: Int!
+  posts: [Post!]
+  post(postId: Float!): Post
 }
 
 type Mutation {
-  addPost(input: CreatePostInput!): Post!
+  addPost(newPost: CreatePostInput!): Post!
+  updatePost(post: PostBody!): Post
+  deletePost(postId: Float!): Post
 }
 
 input CreatePostInput {
   title: String!
   content: String!
+}
+
+input PostBody {
+  id: Int!
+  newPost: CreatePostInput
 }

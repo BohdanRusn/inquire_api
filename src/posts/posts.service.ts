@@ -35,7 +35,7 @@ export class PostsService {
     return await this.postRepository.save(newPost);
   }
 
-  async update(id: number, post: Post): Promise<Post> {
+  async update(id: number, post: CreatePostInput): Promise<Post> {
     await this.postRepository.update(id, post);
     return await this.postRepository.findOne({ where: { id } });
   }

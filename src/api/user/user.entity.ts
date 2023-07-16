@@ -24,11 +24,11 @@ export class User {
   @Column()
   password: string;
 
-  @Field(() => Post)
+  @Field(() => Post, { nullable: true })
   @OneToMany(() => Post, post => post.author)
   posts: Post[];
 
-  @Field(() => Comment)
+  @Field(() => Comment, { nullable: true })
   @OneToMany(() => Comment, comment => comment.author)
   comments: Comment[];
 

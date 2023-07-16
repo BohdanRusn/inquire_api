@@ -24,7 +24,7 @@ export class Post {
   @Column()
   content: string;
 
-  @Field(() => Comment)
+  @Field(() => Comment, { nullable: true })
   @OneToMany(() => Comment, comment => comment.post)
   comments: Comment[];
 
@@ -36,16 +36,19 @@ export class Post {
 }
 
 @InputType()
-export class FindPostInput {
-  @Field(() => Int)
-  id: number;
+export class CreatePostInput {
+  @Field(() => String)
+  title: string;
+
+  @Field(() => String)
+  content: string;
 }
 
 @InputType()
-export class CreatePostInput {
-  @Field()
-  title: string;
+export class PostBody {
+  @Field(() => Int)
+  id: number;
 
-  @Field()
-  content: string;
+  @Field(() => CreatePostInput, { nullable: true })
+  newPost: CreatePostInput;
 }
