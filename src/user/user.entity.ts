@@ -45,3 +45,15 @@ export class UpdateUserInfo {
   @Field(() => String)
   email: string;
 }
+
+@InputType()
+export class CreateUser {
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  password: string;
+}
