@@ -8,7 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { User } from "@/api/user/user.entity";
+import { User } from "@/user/user.entity";
 import { LoginDto, RegisterDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
 import { Request } from "express";

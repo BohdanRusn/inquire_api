@@ -35,13 +35,16 @@ type Post {
 type Query {
   getHello: String!
   posts: [Post!]
-  post(postId: Float!): Post
+  post(userId: Float!): User
 }
 
 type Mutation {
   addPost(newPost: CreatePostInput!): Post!
   updatePost(post: PostBody!): Post
   deletePost(postId: Float!): Post
+  addComment(newComment: CreateCommentInput!): Comment!
+  deleteComment(id: Float!): Comment
+  updateUser(userInfo: UpdateUserInfo!): User!
 }
 
 input CreatePostInput {
@@ -52,4 +55,14 @@ input CreatePostInput {
 input PostBody {
   id: Int!
   newPost: CreatePostInput
+}
+
+input CreateCommentInput {
+  postId: Int!
+  content: String!
+}
+
+input UpdateUserInfo {
+  name: String!
+  email: String!
 }

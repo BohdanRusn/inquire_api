@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Comment } from "./comment.entity";
 import { Repository } from "typeorm";
 import { Post } from "@/posts/post.entity";
-import { User } from "@/api/user/user.entity";
+import { User } from "@/user/user.entity";
 
 @Injectable()
 export class CommentsService {
@@ -14,8 +14,7 @@ export class CommentsService {
     private postRepository: Repository<Post>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {
-  }
+  ) {}
 
   async findOne(id: number): Promise<Comment> {
     return await this.commentRepository.findOne({ where: { id } });
@@ -24,12 +23,12 @@ export class CommentsService {
   async create(
     postId: number,
     userId: number,
-    commentData: Comment,
+    commentData: string,
   ): Promise<Comment> {
     const post = await this.postRepository.findOne({ where: { id: postId } });
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const comment = new Comment();
-    comment.content = commentData.content;
+    comment.content = commentData;
     comment.post = post;
     comment.author = user;
     return await this.commentRepository.save(comment);

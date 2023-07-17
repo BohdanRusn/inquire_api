@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "@/posts/post.entity";
-import { User } from "@/api/user/user.entity";
-import { Field, ObjectType } from "@nestjs/graphql";
+import { User } from "@/user/user.entity";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Entity()
@@ -25,4 +25,13 @@ export class Comment {
     onDelete: "CASCADE",
   })
   author: User;
+}
+
+@InputType()
+export class CreateCommentInput {
+  @Field(() => Int)
+  postId: number;
+
+  @Field(() => String)
+  content: string;
 }

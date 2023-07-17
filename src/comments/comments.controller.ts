@@ -1,39 +1,29 @@
 import {
-  Body,
   ClassSerializerInterceptor,
-  Controller,
-  Delete,
-  Param,
-  Post,
   Req,
   UseInterceptors,
 } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
-import { Comment } from "./comment.entity";
-import { Resolver } from "@nestjs/graphql";
+import { Comment, CreateCommentInput } from "./comment.entity";
+import { Args, Mutation, Resolver } from "@nestjs/graphql";
 
-// import { JwtAuthGuard } from "@/api/user/auth/auth.guard";
-
-// @Controller("comments")
-@Resolver(of => Comment)
+@Resolver(() => Comment)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
-  @Post(":id")
-  // @UseGuards(JwtAuthGuard)
+  @Mutation(() => Comment)
   @UseInterceptors(ClassSerializerInterceptor)
   async addComment(
     @Req() req,
-    @Param("id") id: number,
-    @Body() commentData: Comment,
+    @Args("newComment") { postId, content }: CreateCommentInput,
   ): Promise<Comment> {
-    return await this.commentService.create(id, req.user.id, commentData);
+    console.log(req);
+    return await this.commentService.create(postId, 1, content);
   }
 
-  @Delete(":id")
-  // @UseGuards(JwtAuthGuard)
+  @Mutation(() => Comment, { nullable: true })
   @UseInterceptors(ClassSerializerInterceptor)
-  async deleteComment(@Param("id") id: number): Promise<void> {
+  async deleteComment(@Args("id") id: number): Promise<void> {
     const comment = await this.commentService.findOne(id);
     if (!comment) {
       throw new Error("Comment not found");

@@ -4,12 +4,13 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostsModule } from "./posts/posts.module";
-import { ApiModule } from "./api/api.module";
 import * as process from "process";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { decode } from "@/utils/jwt.utils";
 import * as dotenv from "dotenv";
+import { CommentsModule } from "@/comments/comments.module";
+import { UserModule } from "@/user/user.module";
 
 dotenv.config();
 @Module({
@@ -52,8 +53,8 @@ dotenv.config();
       },
     }),
     PostsModule,
-    // CommentsModule,
-    ApiModule,
+    CommentsModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreatePostInput, Post } from "./post.entity";
-import { User } from "@/api/user/user.entity";
+import { User } from "@/user/user.entity";
 
 @Injectable()
 export class PostsService {

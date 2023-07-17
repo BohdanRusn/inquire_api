@@ -26,7 +26,6 @@ export class PostsController {
     }
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Mutation(() => Post)
   @UseInterceptors(ClassSerializerInterceptor)
   async addPost(
