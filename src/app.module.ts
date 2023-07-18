@@ -1,21 +1,18 @@
 import { Module } from "@nestjs/common";
 import { get, set } from "lodash";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostsModule } from "./posts/posts.module";
 import * as process from "process";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
-import { decode } from "@/utils/jwt.utils";
 import * as dotenv from "dotenv";
 import { CommentsModule } from "@/comments/comments.module";
 import { UserModule } from "@/user/user.module";
+import { AuthModule } from "@/auth/auth.module";
 
 dotenv.config();
 @Module({
   imports: [
-    // ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: "postgres",
@@ -34,29 +31,11 @@ dotenv.config();
       nodeEnv: `.${process.env.NODE_ENV}.env`,
       autoSchemaFile: "schema.gql",
       driver: ApolloDriver,
-      context: ({ req, res }) => {
-        // Get the cookie from request
-        console.log(req.headers.authorization);
-        const token = req.headers.authorization;
-
-        console.log({ token });
-        // Verify the cookie
-
-        const user = token ? decode(token) : null;
-
-        // Attach the user object to the request object
-        if (user) {
-          set(req, "user", user);
-        }
-
-        return { res };
-      },
     }),
     PostsModule,
     CommentsModule,
     UserModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

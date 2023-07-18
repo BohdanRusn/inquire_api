@@ -3,6 +3,8 @@ import { Comment } from "@/comments/comment.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Exclude } from "class-transformer";
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
+import { Trim } from "class-sanitizer";
+import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -23,6 +25,10 @@ export class User {
   @Exclude()
   @Column()
   password: string;
+
+  @Field()
+  @IsOptional()
+  token: string;
 
   @Field(() => Post, { nullable: true })
   @OneToMany(() => Post, post => post.author)
@@ -48,12 +54,29 @@ export class UpdateUserInfo {
 
 @InputType()
 export class CreateUser {
+  @Trim()
+  @IsEmail()
   @Field(() => String)
   name: string;
 
+  @IsString()
+  @MinLength(8)
   @Field(() => String)
   email: string;
 
+  @IsString()
+  @Field(() => String)
+  password: string;
+}
+
+@InputType()
+export class LoginUser {
+  @IsString()
+  @MinLength(8)
+  @Field(() => String)
+  email: string;
+
+  @IsString()
   @Field(() => String)
   password: string;
 }

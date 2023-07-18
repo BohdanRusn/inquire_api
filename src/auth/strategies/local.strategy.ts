@@ -6,7 +6,10 @@ import { User } from "@/user/user.entity";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService) {
+  constructor(
+    // @Inject(forwardRef(() => AuthModule))
+    private authService: AuthService,
+  ) {
     super({
       usernameField: "email",
     });
@@ -14,7 +17,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(email: string, password: string): Promise<User> {
     const user = await this.authService.validateUser(email, password);
-
+    console.log(9999);
     if (!user) {
       throw new UnauthorizedException("Wrong login or password");
     }

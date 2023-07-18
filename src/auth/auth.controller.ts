@@ -1,20 +1,32 @@
-import { Body, Controller, Post, Request, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  forwardRef,
+  Inject,
+  UseGuards,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./guards/local.guard";
-import { CreateUser, User } from "@/user/user.entity";
+import { CreateUser, LoginUser, User } from "@/user/user.entity";
+import { Args, Mutation, Resolver } from "@nestjs/graphql";
 
-@Controller("auth")
+@Resolver(() => User)
+@Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post("login")
-  async login(@Request() req) {
-    return this.authService.login(req.user as User);
+  @Mutation(() => User, { nullable: true })
+  async login(@Args("user") user: LoginUser) {
+    console.log(this.authService, "authService");
+    return this.authService.logIn(user);
   }
 
-  @Post("/register")
-  register(@Body() dto: CreateUser) {
-    return this.authService.register(dto);
+  @Mutation(() => User, { nullable: true })
+  async register(@Args("user") user: CreateUser) {
+    return this.authService.register(user);
   }
 }

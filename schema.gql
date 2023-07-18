@@ -14,6 +14,7 @@ type User {
   name: String!
   email: String!
   password: String!
+  token: String!
   posts: Post
   comments: Comment
   lastLoginAt: DateTime!
@@ -33,7 +34,6 @@ type Post {
 }
 
 type Query {
-  getHello: String!
   posts: [Post!]
   post(userId: Float!): User
 }
@@ -45,6 +45,8 @@ type Mutation {
   addComment(newComment: CreateCommentInput!): Comment!
   deleteComment(id: Float!): Comment
   updateUser(userInfo: UpdateUserInfo!): User!
+  login(user: LoginUser!): User
+  register(user: CreateUser!): User
 }
 
 input CreatePostInput {
@@ -65,4 +67,15 @@ input CreateCommentInput {
 input UpdateUserInfo {
   name: String!
   email: String!
+}
+
+input LoginUser {
+  email: String!
+  password: String!
+}
+
+input CreateUser {
+  name: String!
+  email: String!
+  password: String!
 }
