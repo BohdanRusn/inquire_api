@@ -9,19 +9,20 @@ import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./guards/local.guard";
 import { CreateUser, LoginUser, User } from "@/user/user.entity";
 import { Args, Mutation, Resolver } from "@nestjs/graphql";
+import { JwtAuthGuard } from "@/auth/guards/jwt.guard";
 
 @Resolver(() => User)
-@Controller()
+// @Controller()
 export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Mutation(() => User, { nullable: true })
   async login(@Args("user") user: LoginUser) {
-    console.log(this.authService, "authService");
+    console.log(this.authService.logIn, "authService");
     return this.authService.logIn(user);
   }
 

@@ -43,7 +43,10 @@ export class AuthService {
         ...dto,
         password: hashedPassword,
       });
-      const token = this.jwtService.sign({ id: createdUser.id });
+      const token = this.jwtService.sign({
+        id: createdUser.id,
+        email: createdUser.email,
+      });
 
       return { ...createdUser, token };
     } catch (error) {
@@ -56,7 +59,10 @@ export class AuthService {
     try {
       const userEntity = await this.usersService.findByEmail(user.email);
       const { password, ...result } = userEntity;
-      const token = this.jwtService.sign({ id: result.id });
+      const token = this.jwtService.sign({
+        id: result.id,
+        email: result.email,
+      });
 
       if (!result) {
         throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
