@@ -1,13 +1,12 @@
 import {
   ClassSerializerInterceptor,
   Inject,
-  Req,
   UseInterceptors,
 } from "@nestjs/common";
-import { Request } from "express";
 import { UpdateUserInfo, User } from "./user.entity";
 import { UserService } from "./user.service";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { UserId } from "@/decorators/user-id.decorator";
 
 @Resolver(() => User)
 export class UserController {
@@ -15,7 +14,7 @@ export class UserController {
   private readonly userService: UserService;
 
   @Query(() => User, { nullable: true })
-  async post(@Args("userId") id: number): Promise<User> {
+  async getUser(@Args("userId") id: number): Promise<User> {
     const post = await this.userService.findUserById(id);
     if (!post) {
       throw new Error("User not found");
@@ -28,8 +27,8 @@ export class UserController {
   @UseInterceptors(ClassSerializerInterceptor)
   private updateUser(
     @Args("userInfo") body: UpdateUserInfo,
-    @Req() req: Request,
+    @UserId() userId: number,
   ): Promise<User> {
-    return this.userService.updateUser(body, req);
+    return this.userService.updateUser(body, userId);
   }
 }

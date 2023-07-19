@@ -1,8 +1,4 @@
-import {
-  ClassSerializerInterceptor,
-  UseGuards,
-  UseInterceptors,
-} from "@nestjs/common";
+import { UseGuards } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
 import { Comment, CreateCommentInput } from "./comment.entity";
 import { Args, Mutation, Resolver } from "@nestjs/graphql";
@@ -23,7 +19,6 @@ export class CommentsController {
   }
 
   @Mutation(() => Comment, { nullable: true })
-  @UseInterceptors(ClassSerializerInterceptor)
   async deleteComment(@Args("id") id: number): Promise<void> {
     const comment = await this.commentService.findOne(id);
     if (!comment) {

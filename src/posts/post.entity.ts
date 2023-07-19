@@ -24,11 +24,11 @@ export class Post {
   @Column()
   content: string;
 
-  @Field(() => Comment, { nullable: true })
+  @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, comment => comment.post)
   comments: Comment[];
 
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, user => user.posts, {
     onDelete: "CASCADE",
   })

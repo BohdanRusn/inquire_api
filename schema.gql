@@ -6,7 +6,7 @@ type Comment {
   id: Float!
   content: String!
   post: Post!
-  author: User!
+  author: User
 }
 
 type User {
@@ -17,7 +17,7 @@ type User {
   token: String!
   posts: Post
   comments: Comment
-  lastLoginAt: DateTime!
+  lastLoginAt: DateTime
 }
 
 """
@@ -29,13 +29,14 @@ type Post {
   id: Float!
   title: String!
   content: String!
-  comments: Comment
-  author: User!
+  comments: [Comment!]
+  author: User
 }
 
 type Query {
   posts: [Post!]
-  post(userId: Float!): User
+  post(postId: Float!): Post
+  getUser(userId: Float!): User
 }
 
 type Mutation {

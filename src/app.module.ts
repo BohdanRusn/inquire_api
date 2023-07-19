@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { get, set } from "lodash";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostsModule } from "./posts/posts.module";
 import * as process from "process";

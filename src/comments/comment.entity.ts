@@ -20,7 +20,7 @@ export class Comment {
   })
   post: Post;
 
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, user => user.comments, {
     onDelete: "CASCADE",
   })

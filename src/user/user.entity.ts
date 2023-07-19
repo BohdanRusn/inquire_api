@@ -38,7 +38,7 @@ export class User {
   @OneToMany(() => Comment, comment => comment.author)
   comments: Comment[];
 
-  @Field()
+  @Field(() => Date, { nullable: true })
   @Column({ type: "timestamp", nullable: true, default: null })
   public lastLoginAt: Date | null;
 }
