@@ -37,6 +37,7 @@ type Query {
   posts: [Post!]
   post(postId: Float!): Post
   getUser(userId: Float!): User
+  getCurUser(token: String!): User
 }
 
 type Mutation {
